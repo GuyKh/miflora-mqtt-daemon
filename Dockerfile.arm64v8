@@ -1,9 +1,10 @@
-FROM arm64v8/python:3-stretch
+FROM arm32v7/python:3.7-buster
 MAINTAINER Lars von Wedel <vonwedel@me.com>
 
 WORKDIR /usr/src/app
 
-RUN apt-get update && apt-get install -y bluez
+RUN apt-get -y update && apt-get -y upgrade \
+        && apt-get install -y bluez
 
 COPY requirements.txt ./
 RUN pip install --upgrade pip
