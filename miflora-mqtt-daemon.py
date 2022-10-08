@@ -347,7 +347,7 @@ elif reporting_mode == 'homeassistant-mqtt':
                     'model' : 'MiFlora Plant Sensor (HHCCJCY01)',
                     'sw_version': flora['firmware']
             }
-            payload['expire_after'] = '3600'
+            payload['expire_after'] = str(int(sleep_period * 1.5))
             mqtt_client.publish(discovery_topic, json.dumps(payload), 1, True)
 elif reporting_mode == 'gladys-mqtt':
     print_line('Announcing Mi Flora devices to MQTT broker for auto-discovery ...')
@@ -438,7 +438,7 @@ while True:
             sleep(0.5) # some slack for the publish roundtrip and callback function
         elif reporting_mode == 'homeassistant-mqtt':
             print_line('Publishing to MQTT topic "{}/sensor/{}/state"'.format(base_topic, flora_name.lower()))
-            mqtt_client.publish('{}/sensor/{}/state'.format(base_topic, flora_name.lower()), json.dumps(data))
+            mqtt_client.publish('{}/sensor/{}/state'.format(base_topic, flora_name.lower()), json.dumps(data), retain=True)
             sleep(0.5) # some slack for the publish roundtrip and callback function
         elif reporting_mode == 'gladys-mqtt':
             print_line('Publishing to MQTT topic "{}/mqtt:miflora:{}/feature"'.format(base_topic, flora_name.lower()))
